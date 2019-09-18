@@ -19,39 +19,45 @@ dijkstra <- function(graph, init_node)
   # repeat this process until the graph_2 is empty
   # finally, put 0 into the vec_path_wei where the init_node is.
 
-  { stopifnot(is.data.frame(graph) | is.numeric(init_node) )
-  vec_node <- 0
-  j <- 1
-  for (i in 1:nrow(graph))
   {
-    if(!(graph[i, 1] %in% vec_node))
-    {  vec_node[j] <- graph[i,1]
-    j <- j+1
+      stopifnot(is.data.frame(graph) )
+      stopifnot(is.numeric(init_node))
+      stopifnot(names(graph)==c("v1","v2","w"))
+      if(ncol(graph)!=3) stop("wrong graph!")
+
+
+      vec_node <- 0
+      j <- 1
+      for (i in 1:nrow(graph))
+      {
+        if(!(graph[i, 1] %in% vec_node))
+        {  vec_node[j] <- graph[i,1]
+        j <- j+1
+        }
+      }
+      stopifnot( init_node %in% vec_node )
+      vec_path_wei <- vector(length = length(vec_node))
+
+      start_node <- init_node
+      graph_1 <- graph[graph[,1]==start_node, ]
+      graph_2 <- graph[!graph[,1]==start_node,]
+      node_num <- graph_1[,2]
+      vec_path_wei[node_num] <- graph_1[,3]
+
+      while (nrow(graph_2)!=0 ) {
+        graph <- graph_2
+        start_node <- graph[1,1]
+        graph_1 <- graph[graph[,1]==start_node, ]
+        graph_1 <- cbind(graph_1,w2=graph_1[,3]+vec_path_wei[start_node])
+        graph_2 <- graph[!graph[,1]==start_node,]
+        node_num_new <- graph_1[,2]
+        for (i in node_num_new)
+        {
+          if(vec_path_wei[i]==0) {vec_path_wei[i]=graph_1[graph_1[,2]==i,4]}
+          if(vec_path_wei[i]>graph_1[graph_1[,2]==i,4])  {vec_path_wei[i]=graph_1[graph_1[,2]==i,4]}
+        }
+      }
+
+      vec_path_wei[init_node] <- 0
+      return(vec_path_wei)
     }
-  }
-  stopifnot( init_node %in% vec_node )
-  vec_path_wei <- vector(length = length(vec_node))
-
-  start_node <- init_node
-  graph_1 <- graph[graph[,1]==start_node, ]
-  graph_2 <- graph[!graph[,1]==start_node,]
-  node_num <- graph_1[,2]
-  vec_path_wei[node_num] <- graph_1[,3]
-
-  while (nrow(graph_2)!=0 ) {
-    graph <- graph_2
-    start_node <- graph[1,1]
-    graph_1 <- graph[graph[,1]==start_node, ]
-    graph_1 <- cbind(graph_1,w2=graph_1[,3]+vec_path_wei[start_node])
-    graph_2 <- graph[!graph[,1]==start_node,]
-    node_num_new <- graph_1[,2]
-    for (i in node_num_new)
-    {
-      if(vec_path_wei[i]==0) {vec_path_wei[i]=graph_1[graph_1[,2]==i,4]}
-      if(vec_path_wei[i]>graph_1[graph_1[,2]==i,4])  {vec_path_wei[i]=graph_1[graph_1[,2]==i,4]}
-    }
-  }
-
-  vec_path_wei[init_node] <- 0
-  return(vec_path_wei)
-}

@@ -4,9 +4,11 @@ Title: Euclidian algorithm and Dijkstra algorithm
 Version: 0.000099
 Date: 2019-09-12
 Author@R: person("Fengjuan", "Chen", email="fengjuanchen5@gmail.com"), role=c("aut","cre")  
-Maintainer: fengjuanchen5@gmail.com
+Author: Fengjuan Chen [aut, cre]
+Maintainer: Fengjuan Chen <fengjuanchen5@gmail.com>
 Description: Euclidian algorithm can find the greatest common division of two numbers.
     Dijsktra algothrim implements the function of calculating the shortest path weight 
     fro the given node to every other node in a graph.
 License: GPL-3
 RoxygenNote: 6.1.1
+Encoding: UTF-8
