@@ -12,3 +12,5 @@ Description: Euclidian algorithm can find the greatest common division of two nu
 License: GPL-3
 RoxygenNote: 6.1.1
 Encoding: UTF-8
+suggest: 
+        testthat
